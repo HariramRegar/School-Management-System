@@ -5,16 +5,17 @@ import Footer from './Footer'
 import MainBody from './MainBody'
 import SignUp from '../UserValidation/SignUp';
 import SignIn from '../UserValidation/SignIn';
-import AboutUs from './AboutUs'
-import More from './More'
+import AboutUs from './AboutUs';
+import More from './More';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
 } from "react-router-dom";
-import Notifications from '../Notifications';
+import Notifications from '../Notification/Notifications';
 import SignOut from '../UserValidation/SignOut';
+import CreateNotification from '../Notification/CreateNotification';
 
 
 function Home() {
@@ -28,9 +29,10 @@ function Home() {
                 <Route path="/signout" component={SignOut} />
                 <Route path="/about" component={AboutUs} />
                 <Route path="/notifications" component={Notifications} />
+                <Route path="/createNotifications" component={CreateNotification} />
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }
-export default Home
+export default Home;

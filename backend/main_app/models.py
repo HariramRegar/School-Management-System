@@ -63,3 +63,5 @@ class Notification(models.Model):
     created_by = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
+
+    objects = models.Manager()

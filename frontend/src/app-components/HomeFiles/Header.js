@@ -72,4 +72,4 @@ function ButtonAppBar() {
     );
 }
 
-export default ButtonAppBar
+export default ButtonAppBar;

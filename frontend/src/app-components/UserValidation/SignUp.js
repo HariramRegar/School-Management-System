@@ -73,7 +73,7 @@ function SignUp() {
     // })
       .then((res) => {
         console.log(res);
-        alert(res.data.message)
+        alert(res.data.message);
         history.push('/login');
       })
       .catch((error) => {
@@ -192,4 +192,4 @@ function SignUp() {
     </Container>
   );
 }
-export default SignUp
+export default SignUp;

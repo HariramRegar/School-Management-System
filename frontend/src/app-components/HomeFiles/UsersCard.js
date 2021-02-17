@@ -49,4 +49,4 @@ function UsersCard() {
   );
 }
 
-export default UsersCard
+export default UsersCard;

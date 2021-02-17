@@ -1,6 +1,6 @@
 
 import React from 'react';
-import UsersCard from './UsersCard'
+import UsersCard from './UsersCard';
 
 
 function MainBody() {
@@ -14,4 +14,4 @@ function MainBody() {
         </>
     );
 }
-export default MainBody
+export default MainBody;

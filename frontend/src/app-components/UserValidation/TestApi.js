@@ -22,7 +22,7 @@ function TestApi() {
           .then((res) => {
             console.log(res);
           }).catch((err) => {
-            console.log(err)
+            console.log(err);
           });
       }
 

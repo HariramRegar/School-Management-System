@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import axiosInstance from '../axios';
 import { useHistory } from 'react-router-dom';
 
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function CreateNotification() {
   const history = useHistory();
   const classes = useStyles();
 
@@ -64,21 +65,14 @@ function SignIn() {
 		e.preventDefault();
 
 		axiosInstance
-			.post(`/api/token/`, { 
-        'email': data.email,
-        'password':data.password,
-    })
+			.post(`/create_notification/`, data)
 			.then((res) => {
-				localStorage.setItem('access_token', res.data.access);
-				localStorage.setItem('refresh_token', res.data.refresh);
-				axiosInstance.defaults.headers['Authorization'] =
-					'JWT ' + localStorage.getItem('access_token');
-				history.push('/');
-				//console.log(res);
-				//console.log(res.data);
+        alert(res.data.message)
+				history.push('/notifications');
 			})
       .catch((error)=>{
         console.log(error);
+        alert('You are not logged in, please login and create again.');
       });
 	};
 
@@ -87,11 +81,8 @@ function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Create Notification
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
@@ -99,30 +90,26 @@ function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="title"
+            label="Title"
+            name="title"
+            autoComplete="title"
             autoFocus
             onChange={handleInputChange}
-            value={data.email}
+            value={data.title}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
+            name="message"
+            label="Message"
+            type="message"
+            id="message"
             autoComplete="current-password"
             onChange={handleInputChange}
-            value={data.password}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            value={data.message}
           />
           <Button
             type="submit"
@@ -131,20 +118,8 @@ function SignIn() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Create Notice
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>
@@ -154,4 +129,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default CreateNotification;
