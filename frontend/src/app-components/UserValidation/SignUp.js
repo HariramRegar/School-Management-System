@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axiosInstance from '../axios';
+import { useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -47,7 +49,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignUp() {
+  const history = useHistory();
   const classes = useStyles();
+
+  const [data, setData] = useState({});
+
+  const handleInputChange = (event) => {
+    event.persist();
+    setData(data => ({ ...data, [event.target.name]: event.target.value }));
+  }
+
+  const handleSubmit = (event) => {
+    console.log({ data });
+    event.preventDefault();
+    axiosInstance.post('/signup/', data)
+    // axios({
+    //   method: 'post',
+    //   url: 'http://127.0.0.1:8000/signup/',
+    //   data: data,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+      .then((res) => {
+        console.log(res);
+        alert(res.data.message)
+        history.push('/login');
+      })
+      .catch((error) => {
+        alert('Somthing went wrong, please try again later')
+        console.log(error.message);
+      });
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,18 +92,20 @@ function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="first_name"
                 variant="outlined"
                 required
                 fullWidth
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={handleInputChange}
+                value={data.firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -80,8 +115,10 @@ function SignUp() {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 autoComplete="lname"
+                onChange={handleInputChange}
+                value={data.lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -93,6 +130,21 @@ function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleInputChange}
+                value={data.email}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="user_name"
+                label="User Name"
+                name="user_name"
+                autoComplete="user_name"
+                onChange={handleInputChange}
+                value={data.user_name}
               />
             </Grid>
             <Grid item xs={12}>
@@ -105,6 +157,8 @@ function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handleInputChange}
+                value={data.password}
               />
             </Grid>
             <Grid item xs={12}>
@@ -125,7 +179,7 @@ function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

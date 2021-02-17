@@ -13,6 +13,8 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import Notifications from '../Notifications';
+import SignOut from '../UserValidation/SignOut';
 
 
 function Home() {
@@ -23,8 +25,9 @@ function Home() {
                 <Route exact path="/" component={MainBody} />
                 <Route path="/login" component={SignIn} />
                 <Route path="/signup" component={SignUp} />
+                <Route path="/signout" component={SignOut} />
                 <Route path="/about" component={AboutUs} />
-                <Route path="/more" component={More} />
+                <Route path="/notifications" component={Notifications} />
             </Switch>
             <Footer />
         </>

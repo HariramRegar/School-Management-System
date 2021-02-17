@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axiosInstance from '../axios';
+import { useHistory } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -47,7 +49,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignIn() {
+  const history = useHistory();
   const classes = useStyles();
+
+  const [data, setData] = useState({});
+
+  const handleInputChange = (event) => {
+    event.persist();
+    setData(data => ({ ...data, [event.target.name]: event.target.value }));
+  }
+
+  const handleSubmit = (e) => {
+    // const history = useHistory();
+		e.preventDefault();
+
+		axiosInstance
+			.post(`/api/token/`, { 
+        'email': data.email,
+        'password':data.password,
+    })
+			.then((res) => {
+				localStorage.setItem('access_token', res.data.access);
+				localStorage.setItem('refresh_token', res.data.refresh);
+				axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + localStorage.getItem('access_token');
+				history.push('/');
+				//console.log(res);
+				//console.log(res.data);
+			})
+      .catch((error)=>{
+        console.log(error);
+      });
+	};
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,7 +93,7 @@ function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -70,6 +104,8 @@ function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={handleInputChange}
+            value={data.email}
           />
           <TextField
             variant="outlined"
@@ -81,6 +117,8 @@ function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleInputChange}
+            value={data.password}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -102,7 +140,7 @@ function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

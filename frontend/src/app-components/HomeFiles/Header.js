@@ -39,10 +39,10 @@ function ButtonAppBar() {
                     <Link to="">
                         <Button color="">Admin</Button>
                     </Link>
-                    <Link to="/signup">
+                    <Link to="#">
                         <Button color="">Teacher</Button>
                     </Link>
-                    <Link to="/login">
+                    <Link to="#">
                         <Button color="">Student</Button>
                     </Link>
                     <Link to="">
@@ -51,11 +51,20 @@ function ButtonAppBar() {
                     <Typography variant="h6" className={classes.title}>
                         School Management System
                     </Typography>
-                    <Link to="/about">
+                    {/* <Link to="/about">
                         <Button color="">About Us</Button>
+                    </Link> */}
+                    <Link to="/notifications">
+                        <Button color="">Notifications</Button>
                     </Link>
-                    <Link to="/more">
-                        <Button color="">More</Button>
+                    <Link to="/signup">
+                        <Button color="">Resiter</Button>
+                    </Link>
+                    <Link to="/login">
+                        <Button color="">Sign In</Button>
+                    </Link>
+                    <Link to="/signout">
+                        <Button color="">Log Out</Button>
                     </Link>
                 </Toolbar>
             </AppBar>
