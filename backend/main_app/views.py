@@ -37,7 +37,7 @@ class UserViewSet(viewsets.GenericViewSet):
             user_data['user_name'] = data['user_name']
             user_data['email'] = data['email']
             user_data['password'] = data['password']
-            user_data['user_type'] = 'student'
+            user_data['user_type'] = data['user_type']
             user_data['is_approved'] = False
             user_data['contact_number'] = '8118888888'
             user_data['created_at'] = str(datetime.datetime.now())
@@ -68,7 +68,7 @@ class NotificationsViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['get'], url_path='notifications')
     def notifications(self, request):
         try:
-            queryset = Notification.objects.all()
+            queryset = Notification.objects.all().order_by('-created_at')
             data = self.serializer_class(queryset, many=True).data
             return Response({'data': data})
         except Exception as ex:

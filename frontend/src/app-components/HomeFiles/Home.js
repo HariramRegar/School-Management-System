@@ -16,12 +16,16 @@ import {
 import Notifications from '../Notification/Notifications';
 import SignOut from '../UserValidation/SignOut';
 import CreateNotification from '../Notification/CreateNotification';
+import UsersCard from '../Admin/UsersCard';
+import AdminDashboard from '../Admin/AdminDashboard';
+import TeacherDashboard from '../Admin/TeacherDashboard';
+import StudentDashboard from '../Admin/StudentDashboard';
 
 
 function Home() {
     return (
         <>
-            <ButtonAppBar />
+            {/* <ButtonAppBar /> */}
             <Switch>
                 <Route exact path="/" component={MainBody} />
                 <Route path="/login" component={SignIn} />
@@ -30,6 +34,9 @@ function Home() {
                 <Route path="/about" component={AboutUs} />
                 <Route path="/notifications" component={Notifications} />
                 <Route path="/createNotifications" component={CreateNotification} />
+                <Route path="/admin" component={AdminDashboard} />
+                <Route path="/student" component={StudentDashboard} />
+                <Route path="/teacher" component={TeacherDashboard} />
             </Switch>
             {/* <Footer /> */}
         </>

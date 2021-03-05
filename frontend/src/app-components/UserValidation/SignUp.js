@@ -8,6 +8,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,14 +65,14 @@ function SignUp() {
     console.log({ data });
     event.preventDefault();
     axiosInstance.post('/signup/', data)
-    // axios({
-    //   method: 'post',
-    //   url: 'http://127.0.0.1:8000/signup/',
-    //   data: data,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
+      // axios({
+      //   method: 'post',
+      //   url: 'http://127.0.0.1:8000/signup/',
+      //   data: data,
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
       .then((res) => {
         console.log(res);
         alert(res.data.message);
@@ -90,10 +92,28 @@ function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Registration Form
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Select
+                variant="outlined"
+                required
+                fullWidth
+                defaultValue='student'
+                id="user_type"
+                label="You are"
+                name="user_type"
+                autoComplete="lname"
+                onChange={handleInputChange}
+                value={data.user_type}
+              >
+                <MenuItem value={'student'}>Student</MenuItem>
+                <MenuItem value={'teacher'}>Teacher</MenuItem>
+                <MenuItem value={'admin'}>Admin</MenuItem>
+              </Select>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"

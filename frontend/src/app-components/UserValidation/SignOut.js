@@ -13,8 +13,10 @@ function SignOut() {
         });
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('userDetails');
         axiosInstance.defaults.headers['Authorization'] = null;
         history.push('/login');
+        window.location.reload(); 
     });
     return <div>Logout</div>;
 }

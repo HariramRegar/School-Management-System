@@ -73,10 +73,26 @@ function SignIn() {
 				localStorage.setItem('refresh_token', res.data.refresh);
 				axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');
-				history.push('/');
+        
 				//console.log(res);
 				//console.log(res.data);
 			})
+      .then(()=>{
+          axiosInstance
+              .get(`/userdetails/`)
+              .then(res => {
+                  console.log(res.data);
+                  // setUser(res.data.data[0].first_name);
+                  localStorage.setItem('userDetails', JSON.stringify(res.data.data[0]));
+                  history.push('/');
+                  window.location.reload(); 
+                  
+              })
+              .catch(err => {
+                  console.log(err);
+                  alert('You are not logged in, please login and check again.');
+              })
+      })
       .catch((error)=>{
         console.log(error);
       });

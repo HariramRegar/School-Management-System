@@ -10,6 +10,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import SideBar from './app-components/HomeFiles/SideBar';
 
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
     <div className="App">
       {/* <TestApi /> */}
       <Router>
-        <Home />
+        {/* <Home /> */}
+        <SideBar />
       </Router>
     </div>
   );
