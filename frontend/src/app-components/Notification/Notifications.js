@@ -47,7 +47,7 @@ export default function Notifications() {
         axiosInstance
             .get(`/notifications/?skip=${(newPage-1)*10}&limit=10`)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setPosts(res.data.data);
                 const pageCount = Number(res.data.count);
                 const pageCount2 = parseInt(pageCount/10)
@@ -55,7 +55,7 @@ export default function Notifications() {
                 setTotalPages(pageCount1);
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 alert('You are not logged in, please login and check again.');
             })
     };
@@ -64,7 +64,7 @@ export default function Notifications() {
         axiosInstance
             .get(`/notifications/`)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setPosts(res.data.data);
                 const pageCount = Number(res.data.count);
                 const pageCount2 = parseInt(pageCount/10)
@@ -72,7 +72,7 @@ export default function Notifications() {
                 setTotalPages(pageCount1);
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 alert('You are not logged in, please login and check again.');
             })
     }, [])
@@ -82,7 +82,7 @@ export default function Notifications() {
             <div className={classes.root}>
                 {posts.map(post => (
 
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} key={post.id}>
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item>
                                 <a>Posted by: {post.created_by}</a>

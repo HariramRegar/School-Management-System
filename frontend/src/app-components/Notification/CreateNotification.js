@@ -71,7 +71,7 @@ function CreateNotification() {
 				history.push('/notifications');
 			})
       .catch((error)=>{
-        console.log(error);
+        // console.log(error);
         alert('You are not logged in, please login and create again.');
       });
 	};

@@ -81,7 +81,7 @@ function SignIn() {
           axiosInstance
               .get(`/userdetails/`)
               .then(res => {
-                  console.log(res.data);
+                  // console.log(res.data);
                   // setUser(res.data.data[0].first_name);
                   localStorage.setItem('userDetails', JSON.stringify(res.data.data[0]));
                   history.push('/');
@@ -89,12 +89,12 @@ function SignIn() {
                   
               })
               .catch(err => {
-                  console.log(err);
+                  // console.log(err);
                   alert('You are not logged in, please login and check again.');
               })
       })
       .catch((error)=>{
-        console.log(error);
+        // console.log(error);
       });
 	};
 

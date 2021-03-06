@@ -46,7 +46,7 @@ export default function StudentsDetail() {
     axiosInstance
       .get(`/users_list/?user_type=student&skip=${(newPage - 1) * 10}&limit=10`)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data.data);
         const pageCount = Number(res.data.count);
         const pageCount2 = parseInt(pageCount / 10)
@@ -54,7 +54,7 @@ export default function StudentsDetail() {
         setTotalPages(pageCount1);
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
         alert('You are not logged in, please login and check again.');
       })
   };
@@ -63,7 +63,7 @@ export default function StudentsDetail() {
     axiosInstance
       .get(`/users_list/?user_type=student`)
       .then(res => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setData(res.data.data);
       })
       .catch(err => {
@@ -90,7 +90,7 @@ export default function StudentsDetail() {
             </TableHead>
             <TableBody>
               {data.map(row => (
-                <StyledTableRow key={row.first_name}>
+                <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
                     {row.first_name}
                   </StyledTableCell>

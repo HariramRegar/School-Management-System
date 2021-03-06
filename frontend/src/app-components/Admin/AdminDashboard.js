@@ -44,11 +44,11 @@ function AdminDashboard() {
         axiosInstance
             .get(`/countdetails/`)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setCountDetails(res.data);
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 alert('You are not logged in, please login and check again.');
             })
     }, [])

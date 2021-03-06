@@ -10,7 +10,7 @@ function TestApi() {
     }
 
     const handleSubmit = (event) => {
-        console.log({ inputs });
+        // console.log({ inputs });
         event.preventDefault();
         // axios.get('https://jsonplaceholder.typicode.com/posts')
         axios({
@@ -20,9 +20,9 @@ function TestApi() {
           //headers: {'Content-Type': 'multipart/form-data' }
           })
           .then((res) => {
-            console.log(res);
+            // console.log(res);
           }).catch((err) => {
-            console.log(err);
+            // console.log(err);
           });
       }
 

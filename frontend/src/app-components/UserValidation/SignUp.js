@@ -62,17 +62,17 @@ function SignUp() {
   }
 
   const handleSubmit = (event) => {
-    console.log({ data });
+    // console.log({ data });
     event.preventDefault();
     axiosInstance.post('/signup/', data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert(res.data.message);
         history.push('/login');
       })
       .catch((error) => {
         alert('Somthing went wrong, please try again later')
-        console.log(error.message);
+        // console.log(error.message);
       });
   }
 
