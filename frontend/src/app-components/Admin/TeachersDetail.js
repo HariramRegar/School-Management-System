@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,10 +7,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import axiosInstance from '../axios'
+import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
+import Pagination from '@material-ui/lab/Pagination';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: 'green',
     color: theme.palette.common.white,
   },
   body: {
@@ -26,18 +29,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -46,33 +37,85 @@ const useStyles = makeStyles({
 
 export default function StudentsDetail() {
   const classes = useStyles();
+  const [data, setData] = useState([]);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(1)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    axiosInstance
+      .get(`/users_list/?user_type=teacher&skip=${(newPage - 1) * 10}&limit=10`)
+      .then(res => {
+        console.log(res.data);
+        setData(res.data.data);
+        const pageCount = Number(res.data.count);
+        const pageCount2 = parseInt(pageCount / 10)
+        const pageCount1 = pageCount % 10 == 0 ? pageCount2 : pageCount2 + 1;
+        setTotalPages(pageCount1);
+      })
+      .catch(err => {
+        console.log(err);
+        alert('You are not logged in, please login and check again.');
+      })
+  };
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/users_list/?user_type=teacher`)
+      .then(res => {
+        console.log(res.data.data);
+        setData(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+        // alert('You are not logged in, please login and check again.');
+      })
+  }, [])
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>First Name</StyledTableCell>
-            <StyledTableCell align="right">Last Name</StyledTableCell>
-            <StyledTableCell align="right">Email Id</StyledTableCell>
-            <StyledTableCell align="right">User Name</StyledTableCell>
-            <StyledTableCell align="right">Contact No.</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {data.length > 0 &&
+        <>
+          <h3>Teachers Detail:</h3>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>First Name</StyledTableCell>
+                  <StyledTableCell align="right">Last Name</StyledTableCell>
+                  <StyledTableCell align="right">Email Id</StyledTableCell>
+                  <StyledTableCell align="right">User Name</StyledTableCell>
+                  <StyledTableCell align="right">Action</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map(row => (
+                  <StyledTableRow key={row.first_name}>
+                    <StyledTableCell component="th" scope="row">
+                      {row.first_name}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.last_name}</StyledTableCell>
+                    <StyledTableCell align="right">{row.email}</StyledTableCell>
+                    <StyledTableCell align="right">{row.user_name}</StyledTableCell>
+                    <StyledTableCell align="right"><EditTwoToneIcon /></StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className={classes.root}>
+            {/* <Pagination count={10} shape="rounded" /> */}
+            <Pagination
+              count={totalPages}
+              variant="outlined"
+              shape="rounded"
+              page={page}
+              onChange={handleChangePage}
+            />
+          </div>
+        </>
+      }
+      {data.length == 0 && <TableContainer component={Paper}><img src='https://i.pinimg.com/originals/c9/22/68/c92268d92cf2dbf96e3195683d9e14fb.png'></img></TableContainer>}
+    </>
   );
 }

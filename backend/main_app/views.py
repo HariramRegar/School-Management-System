@@ -56,7 +56,7 @@ class UserViewSet(viewsets.GenericViewSet):
             else:
                 return Response({'message': 'Email Id is required'}, status=status.HTTP_200_OK)
         except Exception as ex:
-            # print(ex.args())
+            print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -120,6 +120,24 @@ class NotificationsViewSet(viewsets.GenericViewSet):
             teacherCount = queryset.count()
             # finaldata=UserListSerializer(queryset, many=True).data
             return Response({'totalStudent': studentCount, 'totalTeacher':teacherCount}, status=status.HTTP_200_OK)
+        except Exception as ex:
+            # print(ex.args())
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @ action(detail=False, methods=['get'], url_path='users_list')
+    def usersList(self, request):
+        try:
+            skip =int(request.GET.get('skip',0))
+            limit=int(request.GET.get('limit',0))
+            if skip<0:
+                skip=0
+            if limit <=0:
+                limit=10
+            user_type = request.GET.get('user_type','student')
+            print('user_type: ',user_type)
+            queryset=User.objects1.filter(user_type=user_type)
+            finaldata=UserListSerializer(queryset[skip:skip+limit], many=True).data
+            return Response({'data': finaldata, 'count':queryset.count()}, status=status.HTTP_200_OK)
         except Exception as ex:
             # print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -104,7 +104,7 @@ export default function SideBar() {
                             <ListItem button >
                                 <ListItemIcon><NotificationsActiveIcon /></ListItemIcon>
                                 <Link to="/notifications">
-                                    <ListItemText >Notice board</ListItemText>
+                                    <ListItemText >Notifications</ListItemText>
                                 </Link>
                             </ListItem>
                         </List>
