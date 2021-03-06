@@ -65,14 +65,6 @@ function SignUp() {
     console.log({ data });
     event.preventDefault();
     axiosInstance.post('/signup/', data)
-      // axios({
-      //   method: 'post',
-      //   url: 'http://127.0.0.1:8000/signup/',
-      //   data: data,
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
       .then((res) => {
         console.log(res);
         alert(res.data.message);

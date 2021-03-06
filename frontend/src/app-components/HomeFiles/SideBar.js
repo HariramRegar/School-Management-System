@@ -17,6 +17,9 @@ import Home from './Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import axiosInstance from '../axios'
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import {
     BrowserRouter as Router,
     Switch,
@@ -82,16 +85,28 @@ export default function SideBar() {
                         <List>
                             <ListItem button >
                                 <ListItemIcon><DashboardIcon /></ListItemIcon>
-                                <Link to="/admin">
+                                <Link to="/dashboard">
                                     <ListItemText >DashBoard</ListItemText>
                                 </Link>
                             </ListItem>
-                            {['Teacher', 'Student', 'Attendence', 'Fee', 'Notices'].map((text, index) => (
-                                <ListItem button key={text}>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            ))}
+                            <ListItem button >
+                                <ListItemIcon><SupervisedUserCircleIcon /></ListItemIcon>
+                                <Link to="/teachers">
+                                    <ListItemText >Teachers</ListItemText>
+                                </Link>
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemIcon><PeopleAltRoundedIcon /></ListItemIcon>
+                                <Link to="/Students">
+                                    <ListItemText >Students</ListItemText>
+                                </Link>
+                            </ListItem>
+                            <ListItem button >
+                                <ListItemIcon><NotificationsActiveIcon /></ListItemIcon>
+                                <Link to="/notifications">
+                                    <ListItemText >Notice board</ListItemText>
+                                </Link>
+                            </ListItem>
                         </List>
                     </div>
                 </Drawer>

@@ -68,9 +68,16 @@ class NotificationsViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['get'], url_path='notifications')
     def notifications(self, request):
         try:
+            skip =int(request.GET.get('skip',0))
+            limit=int(request.GET.get('limit',0))
+            if skip<0:
+                skip=0
+            if limit <=0:
+                limit=10
             queryset = Notification.objects.all().order_by('-created_at')
-            data = self.serializer_class(queryset, many=True).data
-            return Response({'data': data})
+            count = queryset.count()
+            data = self.serializer_class(queryset[skip:skip+limit], many=True).data
+            return Response({'count':count, 'data': data})
         except Exception as ex:
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -100,6 +107,19 @@ class NotificationsViewSet(viewsets.GenericViewSet):
             print(queryset)
             finaldata=UserListSerializer(queryset, many=True).data
             return Response({'data': finaldata}, status=status.HTTP_200_OK)
+        except Exception as ex:
+            # print(ex.args())
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @ action(detail=False, methods=['get'], url_path='countdetails')
+    def countdetails(self, request):
+        try:
+            queryset=User.objects1.filter(user_type='student')
+            studentCount = queryset.count()
+            queryset=User.objects1.filter(user_type='teacher')
+            teacherCount = queryset.count()
+            # finaldata=UserListSerializer(queryset, many=True).data
+            return Response({'totalStudent': studentCount, 'totalTeacher':teacherCount}, status=status.HTTP_200_OK)
         except Exception as ex:
             # print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
