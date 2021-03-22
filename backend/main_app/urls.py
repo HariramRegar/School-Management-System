@@ -18,4 +18,8 @@ urlpatterns = [
         views.NotificationsViewSet.as_view({'get': 'countdetails'}), name='countdetails'),
     url('users_list/$',
         views.NotificationsViewSet.as_view({'get': 'usersList'}), name='usersList'),
+    url('take_attendance/$',
+        views.NotificationsViewSet.as_view({'post': 'takeAttendance'}), name='take_attendance'),
+    url('attendance_records/$',
+        views.NotificationsViewSet.as_view({'get': 'AttendanceRecords'}), name='attendance_records'),
 ]

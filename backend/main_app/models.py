@@ -65,3 +65,12 @@ class Notification(models.Model):
     modified_at = models.DateTimeField(default=timezone.now)
 
     objects = models.Manager()
+
+class StudentAttendance(models.Model):
+    # class_name = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE)
+    class_name = models.CharField(max_length=10)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+    date = models.DateField(auto_now_add=True)
+
+    objects = models.Manager()

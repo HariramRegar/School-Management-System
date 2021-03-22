@@ -34,13 +34,28 @@ function Home() {
                 <Route path="/signup" component={SignUp} />
                 <Route path="/signout" component={SignOut} />
                 <Route path="/about" component={AboutUs} />
-                <Route path="/notifications" component={Notifications} />
-                <Route path="/createNotifications" component={CreateNotification} />
-                <Route path="/dashboard" component={AdminDashboard} />
-                <Route path="/student" component={StudentDashboard} />
-                <Route path="/teacher" component={TeacherDashboard} />
-                <Route path="/teachers" component={TeachersDetail} />
-                <Route path="/Students" component={StudentsDetail} />
+                {/* for admin */}
+                <Route path="/admin-notifications" component={Notifications} />
+                <Route path="/admin-createNotifications" component={CreateNotification} />
+                <Route path="/admin-dashboard" component={AdminDashboard} />
+                <Route path="/admin-student" component={StudentDashboard} />
+                <Route path="/admin-teacher" component={TeacherDashboard} />
+                <Route path="/admin-teachers" component={TeachersDetail} />
+                <Route path="/admin-Students" component={StudentsDetail} />
+                <Route path="/admin-attendance" component={StudentsDetail} />
+                {/* for teacher */}
+                <Route path="/teacher-notifications" component={Notifications} />
+                <Route path="/teacher-createNotifications" component={CreateNotification} />
+                <Route path="/teacher-dashboard" component={AdminDashboard} />
+                <Route path="/teacher-student" component={StudentDashboard} />
+                <Route path="/teacher-Students" component={StudentsDetail} />
+                <Route path="/teacher-attendance" component={StudentsDetail} />
+                {/* for student */}
+                <Route path="/student-notifications" component={Notifications} />
+                <Route path="/student-createNotifications" component={CreateNotification} />
+                <Route path="/student-dashboard" component={AdminDashboard} />
+                <Route path="/student-student" component={StudentDashboard} />
+                <Route path="/student-attendance" component={StudentsDetail} />
             </Switch>
             {/* <Footer /> */}
         </>

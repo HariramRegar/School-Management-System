@@ -20,6 +20,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import {
     BrowserRouter as Router,
     Switch,
@@ -85,25 +86,31 @@ export default function SideBar() {
                         <List>
                             <ListItem button >
                                 <ListItemIcon><DashboardIcon /></ListItemIcon>
-                                <Link to="/dashboard">
+                                <Link to={userDetails.user_type+"-dashboard"}>
                                     <ListItemText >DashBoard</ListItemText>
                                 </Link>
                             </ListItem>
                             <ListItem button >
                                 <ListItemIcon><SupervisedUserCircleIcon /></ListItemIcon>
-                                <Link to="/teachers">
+                                <Link to={userDetails.user_type+"-teachers"}>
                                     <ListItemText >Teachers</ListItemText>
                                 </Link>
                             </ListItem>
                             <ListItem button >
                                 <ListItemIcon><PeopleAltRoundedIcon /></ListItemIcon>
-                                <Link to="/Students">
+                                <Link to={userDetails.user_type+"-Students"}>
                                     <ListItemText >Students</ListItemText>
                                 </Link>
                             </ListItem>
                             <ListItem button >
+                                <ListItemIcon><EmojiPeopleIcon /></ListItemIcon>
+                                <Link to={userDetails.user_type+"-attendance"}>
+                                    <ListItemText >Attendance</ListItemText>
+                                </Link>
+                            </ListItem>
+                            <ListItem button >
                                 <ListItemIcon><NotificationsActiveIcon /></ListItemIcon>
-                                <Link to="/notifications">
+                                <Link to={userDetails.user_type+"-notifications"}>
                                     <ListItemText >Notifications</ListItemText>
                                 </Link>
                             </ListItem>

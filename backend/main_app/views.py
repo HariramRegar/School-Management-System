@@ -7,8 +7,9 @@ from rest_framework.decorators import action
 from rest_framework import status, viewsets
 import datetime
 
-from .serializers import UserSerializer, NotificationSerializer, UserListSerializer
-from .models import User, Notification
+from .serializers import UserSerializer, NotificationSerializer, UserListSerializer,\
+    StudentAttendanceSerializer
+from .models import User, Notification, StudentAttendance
 
 
 class UserViewSet(viewsets.GenericViewSet):
@@ -137,7 +138,56 @@ class NotificationsViewSet(viewsets.GenericViewSet):
             print('user_type: ',user_type)
             queryset=User.objects1.filter(user_type=user_type)
             finaldata=UserListSerializer(queryset[skip:skip+limit], many=True).data
-            return Response({'data': finaldata, 'count':queryset.count()}, status=status.HTTP_200_OK)
+            return Response({'count':queryset.count(), 'data': finaldata}, status=status.HTTP_200_OK)
         except Exception as ex:
             # print(ex.args())
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @ action(detail=False, methods=['post'], url_path='take_attendance')
+    def takeAttendance(self, request):
+        try:
+            data=request.data
+            # remember old state
+            _mutable = data._mutable
+            # set to mutable
+            data._mutable = True
+            if data['student_id']:
+                data['student']=data['student_id']
+                data['status'] = data.get('status', 0)
+                data['date'] = datetime.date.today()
+                check_records = StudentAttendance.objects.filter(student=data['student'], status=1, date = data['date'])
+                if check_records.count()>0:
+                    return Response({'message':'Attendance already recorded'}, status=status.HTTP_200_OK)
+                serialized_data = StudentAttendanceSerializer(data=data)
+                if serialized_data.is_valid():
+                    serialized_data.save()
+                    print(serialized_data.validated_data)
+                    return Response({'message':'Attendance recorded'}, status=status.HTTP_200_OK)
+                else:
+                    print(serialized_data.errors)
+                    return Response({'message':'Somthing went wrong'}, status=status.HTTP_200_OK)
+            return Response({'message':'please select a student id'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            # print(ex.args())
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+     
+    @ action(detail=False, methods=['get'], url_path='attendance_records')
+    def AttendanceRecords(self, request):
+        try:
+            skip =int(request.GET.get('skip',0))
+            limit=int(request.GET.get('limit',0))
+            if skip<0:
+                skip=0
+            if limit <=0:
+                limit=10
+            student_id = request.GET.get('student_id',None)
+            if student_id:
+                queryset = StudentAttendance.objects.filter(student_id=student_id)
+                finaldata=StudentAttendanceSerializer(queryset[skip:skip+limit], many=True).data
+                return Response({'count':queryset.count(),'data': finaldata}, status=status.HTTP_200_OK)
+            else:
+                queryset = StudentAttendance.objects.all()
+                finaldata=StudentAttendanceSerializer(queryset[skip:skip+limit], many=True).data
+                return Response({'count':queryset.count() , 'data': finaldata}, status=status.HTTP_200_OK)
+        except Exception as ex:
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
