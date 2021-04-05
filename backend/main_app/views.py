@@ -11,22 +11,7 @@ from .serializers import UserSerializer, NotificationSerializer, UserListSeriali
     StudentAttendanceSerializer
 from .models import User, Notification, StudentAttendance
 
-
-class UserViewSet(viewsets.GenericViewSet):
-    serializer_class = UserSerializer
-
-    @action(detail=False, methods=['get'], url_path='user_list')
-    def user_list(self, request):
-        try:
-            queryset = User.objects.all()
-            print(queryset.count())
-            print(queryset)
-            finaldata = UserListSerializer(queryset, many=True).data
-            return Response(finaldata, status=status.HTTP_200_OK)
-        except Exception as ex:
-            print(ex.args())
-            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+class RegisterViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['post'], url_path='signup')
     def signup(self, request):
         try:
@@ -60,46 +45,22 @@ class UserViewSet(viewsets.GenericViewSet):
             print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-class NotificationsViewSet(viewsets.GenericViewSet):
-    serializer_class = NotificationSerializer
-    # authentication_classes = [JSONWebTokenAuthentication]
+class UserViewSet(viewsets.GenericViewSet):
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-    @action(detail=False, methods=['get'], url_path='notifications')
-    def notifications(self, request):
+    @action(detail=False, methods=['get'], url_path='user_list')
+    def user_list(self, request):
         try:
-            skip =int(request.GET.get('skip',0))
-            limit=int(request.GET.get('limit',0))
-            if skip<0:
-                skip=0
-            if limit <=0:
-                limit=10
-            queryset = Notification.objects.all().order_by('-created_at')
-            count = queryset.count()
-            data = self.serializer_class(queryset[skip:skip+limit], many=True).data
-            return Response({'count':count, 'data': data})
+            queryset = User.objects.all()
+            print(queryset.count())
+            print(queryset)
+            finaldata = UserListSerializer(queryset, many=True).data
+            return Response(finaldata, status=status.HTTP_200_OK)
         except Exception as ex:
+            print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    @action(detail=False, methods=['post'], url_path='create_notification')
-    def create_notification(self, request):
-        try:
-            data = request.data
-            data['created_by'] = request.user.user_name
-            serialized_data = self.serializer_class(data=data)
-            if serialized_data.is_valid():
-                print(serialized_data.validated_data)
-                serialized_data.save()
-                return Response({'message': 'Notification added succesfully.'}, status=status.HTTP_200_OK)
-            else:
-                print(serialized_data.errors)
-                return Response({'message': 'Somthing went wrong, please try again later.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            return Response({'data': data})
-        except Exception as ex:
-            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    
     @ action(detail=False, methods=['get'], url_path='userdetails')
     def userdetails(self, request):
         try:
@@ -143,6 +104,72 @@ class NotificationsViewSet(viewsets.GenericViewSet):
             # print(ex.args())
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    @action(detail=False, methods=['put'], url_path='edit_self_details')
+    def editSelfDetails(self, request):
+        try:
+            data = request.data
+            queryset=User.objects1.filter(email=request.user.email)
+            user_data=UserListSerializer(queryset, many=True).data
+            if queryset.count()==1:
+                user_data = user_data[0]
+                for each in data.keys():
+                    user_data[each] = data[each]
+                user_data['modified_at'] = str(datetime.datetime.now())
+                
+                serialized_data = self.serializer_class(data=user_data)
+                if serialized_data.is_valid():
+                    serialized_data.save()
+                    return Response({'message': 'record updated'}, status=status.HTTP_200_OK)
+                else:
+                    print(serialized_data.errors)
+                    return Response({'message': 'Somthing went wrong, please try again later.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'permition denied'}, status=status.HTTP_400_BAD_REQUEST )
+        except Exception as ex:
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+
+class NotificationsViewSet(viewsets.GenericViewSet):
+    serializer_class = NotificationSerializer
+    # authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['get'], url_path='notifications')
+    def notifications(self, request):
+        try:
+            skip =int(request.GET.get('skip',0))
+            limit=int(request.GET.get('limit',0))
+            if skip<0:
+                skip=0
+            if limit <=0:
+                limit=10
+            queryset = Notification.objects.all().order_by('-created_at')
+            count = queryset.count()
+            data = self.serializer_class(queryset[skip:skip+limit], many=True).data
+            return Response({'count':count, 'data': data})
+        except Exception as ex:
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'], url_path='create_notification')
+    def create_notification(self, request):
+        try:
+            data = request.data
+            data['created_by'] = request.user.user_name
+            serialized_data = self.serializer_class(data=data)
+            if serialized_data.is_valid():
+                print(serialized_data.validated_data)
+                serialized_data.save()
+                return Response({'message': 'Notification added succesfully.'}, status=status.HTTP_200_OK)
+            else:
+                print(serialized_data.errors)
+                return Response({'message': 'Somthing went wrong, please try again later.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'data': data})
+        except Exception as ex:
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+class AttendanceViewSet(viewsets.GenericViewSet):
+
     @ action(detail=False, methods=['post'], url_path='take_attendance')
     def takeAttendance(self, request):
         try:

@@ -79,6 +79,8 @@ export default function Notifications() {
 
     return (
         <>
+        { posts.length &&
+        <>
             <div className={classes.root}>
                 {posts.map(post => (
 
@@ -110,7 +112,11 @@ export default function Notifications() {
                 />
             </div>
         </>
+        }
+        {posts.length == 0 && 
+            <div component={Paper}>
+                <img src='https://i.pinimg.com/originals/c9/22/68/c92268d92cf2dbf96e3195683d9e14fb.png'></img>
+            </div>}
+        </>
     );
 }
-
-

@@ -22,6 +22,7 @@ import TeacherDashboard from '../Admin/TeacherDashboard';
 import StudentDashboard from '../Admin/StudentDashboard';
 import StudentsDetail from '../Admin/StudentsDetail';
 import TeachersDetail from '../Admin/TeachersDetail';
+import EditDetailsPage from '../Admin/EditDetailsPage';
 
 
 function Home() {
@@ -36,7 +37,7 @@ function Home() {
                 <Route path="/about" component={AboutUs} />
                 {/* for admin */}
                 <Route path="/admin-notifications" component={Notifications} />
-                <Route path="/admin-createNotifications" component={CreateNotification} />
+                <Route path="/createNotifications" component={CreateNotification} />
                 <Route path="/admin-dashboard" component={AdminDashboard} />
                 <Route path="/admin-student" component={StudentDashboard} />
                 <Route path="/admin-teacher" component={TeacherDashboard} />
@@ -56,6 +57,8 @@ function Home() {
                 <Route path="/student-dashboard" component={AdminDashboard} />
                 <Route path="/student-student" component={StudentDashboard} />
                 <Route path="/student-attendance" component={StudentsDetail} />
+                <Route path="/notifications" component={Notifications} />
+                <Route path="/editmydetails" component={EditDetailsPage} />
             </Switch>
             {/* <Footer /> */}
         </>
